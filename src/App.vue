@@ -35,6 +35,7 @@
 <script>
 import { store } from './vuex/store'
 import { mapGetters, mapActions } from 'vuex'
+import interval from './mixins/interval'
 
 export default {
   name: 'app',
@@ -44,6 +45,9 @@ export default {
       limitStock: 100
     }
   },
+  mixins: [
+    interval
+  ],
   computed: {
     ...mapGetters([
       'totalCooked',
