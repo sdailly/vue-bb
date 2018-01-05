@@ -46,7 +46,7 @@
         // this.incrementTimerSell(this.dealer.sellProductPerSecond)
         this.decrementProduction(this.dealer.price)
         if (!this.intervalSaleIsStarted) {
-          this.setNewInterval({name: 'sale', value: this.setIntervalSale})
+          this.setNewInterval({name: 'sale', value: this.setIntervalSale()})
         }
       }
     }

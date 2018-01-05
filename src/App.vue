@@ -88,10 +88,6 @@ export default {
       if (this.totalCookedIsZero) return
       this.incrementTotalSell(value)
     },
-    deleteProductInStock () {
-      if (this.totalCookedIsZero) return
-      this.decrementProduction()
-    },
     setIntervalProduction () {
       this.interval.production = setInterval(() => {
         this.cook(this.timerProduction.auto)
