@@ -1,37 +1,6 @@
 <template>
   <div class="hello">
-    <nav class="Navigation">
-      <a>Fabrication</a>
-      <a>Distribution</a>
-      <a>Matériels</a>
-      <a>Fabrication</a>
-      <a>Succes</a>
-    </nav>
-    <div class="Dashboard">
-      <div class="Dashboard-cook">
-        <p>{{ totalCookedFormatted }}</p>
-        <button @click="cook(timer.production.manually)" class="Dashboard-cookBtn" type="button" name="button">Fabriquer</button>
-      </div>
-      <div class="Dashboard-sell">
-        <p class="Dashboard-sellTotal">{{totalSell}} $</p>
-        <button @click="sale" class="Dashboard-sellBtn" type="button" name="button">Vendre</button>
-      </div>
-    </div>
-    <hr>
-    <div class="Dealer">
-      <div class="Dealer-list">
-        <div class="Dealer-item">
-          <p class="Dealer-desc">1 Enfant</p>
-          <p class="Dealer-gain">Gain : 1$/sec</p>
-          <p class="Dealer-price">Cout : 30 produits</p>
-          <p class="Dealer-available">
-            <span v-show="dealerIsAvailable">Disponible</span>
-            <span v-show="!dealerIsAvailable">Indisponible</span>
-          </p>
-          <button @click="getDealer" :disabled="!dealerIsAvailable" class="Dealer-add" type="button" name="button">Acheter</button>
-        </div>
-      </div>
-    </div>
+
   </div>
 </template>
 
