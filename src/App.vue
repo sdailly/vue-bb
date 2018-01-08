@@ -73,6 +73,9 @@ export default {
     },
     totalCookedIsZero () {
       return this.totalCooked <= 0
+    },
+    checkStock () {
+      return (Math.min(this.totalCooked, Math.max(0, this.totalCooked)))
     }
   },
   methods: {

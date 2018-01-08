@@ -2,9 +2,9 @@ export default {
   state: {
     active: false, // auto sale
     totalSell: 0, // total gain $
-    price: 10, // $ per unit
+    price: 0.10, // $ per unit
     timer: {
-      manually: 1, // sell product per click
+      manually: 0.15, // sell product per click
       auto: 0 // sell product per seconds - group all distributions services
     }
   },
@@ -30,11 +30,16 @@ export default {
       // checkProduction
       dispatch('checkProduction').then((stockAvailable) => {
         if (stockAvailable) {
-          commit('decrementProduction', n)
-          // add gain = nProduit * productUnitPrice
-          commit('addGain', n)
+          dispatch('checkProductionBeforeSale', n).then((number) => {
+            commit('decrementProduction', number)
+            // add gain = nProduit * productUnitPrice
+            commit('addGain', number)
+          })
         }
       })
+    },
+    checkProductionBeforeSale ({getters}, n) {
+      return (getters.totalCooked - n < 0) ? getters.totalCooked : n
     },
     incrementTimerSell ({ commit }, n) {
       commit('incrementTimerSell', n)
@@ -54,7 +59,7 @@ export default {
       return state.active
     },
     totalSell (state) {
-      return state.totalSell
+      return Math.round(state.totalSell * 100) / 100
     },
     priceSell (state) {
       return state.price
