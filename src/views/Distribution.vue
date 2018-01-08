@@ -1,53 +1,44 @@
 <template>
   <div class="Distribution">
-    <div class="Distribution-item Dealer">
-      <div class="Dealer-list">
-        <div class="Dealer-item">
-          <p class="Dealer-desc">1 jeune dealer</p>
-          <p class="Dealer-gain">Gain : 1$/sec</p>
-          <p class="Dealer-price">Cout : 30 produits</p>
-          <p class="Dealer-available">
-            <span v-show="dealerIsAvailable">Disponible</span>
-            <span v-show="!dealerIsAvailable">Indisponible</span>
-          </p>
-          <button @click="getDealer" :disabled="!dealerIsAvailable" class="Dealer-add" type="button" name="button">Acheter</button>
-        </div>
+      <div class="Distribution-item" v-for="(distributor, index) in distributors">
+        <p class="Distributor-desc">{{ distributor.name }}</p>
+        <p class="Distributor-gain">Gain : {{ distributor.gain }}$/sec</p>
+        <p class="Distributor-price">Cout : {{ distributor.price }}g</p>
+        <p class="Distributor-price">Quantité : {{ distributor.quantity }}</p>
+        <p class="Distributor-active">Vente auto : {{ distributor.active }}</p>
+        <small class="Distributor-available">
+          <span v-if="!serviceIsAvailable(distributor.price)">Indisponible</span>
+          <button v-else @click="buyServiceDistribution(distributor)" class="Dealer-add" type="button" name="button">Acheter</button>
+        </small>
       </div>
-    </div>
   </div>
 </template>
 
 <script>
   import { store } from '../vuex/store'
   import { mapGetters, mapActions } from 'vuex'
-  import interval from '../mixins/interval'
+  import service from '../mixins/service'
 
   export default {
     name: 'Distribution',
     store,
     mixins: [
-      interval
+      service
     ],
     computed: {
       ...mapGetters([
-        'totalCooked',
-        'dealer'
-      ]),
-      dealerIsAvailable () {
-        return this.totalCooked >= this.dealer.price
-      }
+        'distributors'
+      ])
     },
     methods: {
       ...mapActions([
-        'decrementProduction',
-        'incrementInterval'
+        'buyService'
       ]),
-      getDealer () {
-        // this.incrementTimerSell(this.dealer.sellProductPerSecond)
-        this.decrementProduction(this.dealer.price)
-        if (!this.intervalSaleIsStarted) {
-          this.setNewInterval({name: 'sale', value: this.setIntervalSale()})
-        }
+      buyServiceDistribution (service) {
+        this.buyService({
+          category: 'distribution',
+          service
+        })
       }
     }
   }
@@ -57,6 +48,11 @@
 <style scoped>
   .Distribution {
     display: flex;
-    flex-flow: column wrap;
+    flex-flow: row wrap;
   }
+  .Distribution-item {
+    padding: 10px;
+  }
+
+
 </style>

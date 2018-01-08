@@ -1,21 +1,23 @@
 export default {
   state: {
-    totalCooked: 50,
-    numberCook: 1,
+    totalCooked: 1230,
     timer: {
-      manually: 1,
+      manually: 0.15,
       auto: 0
     }
   },
   mutations: {
-    incrementProduction (state, n = 1) {
+    incrementProduction (state, n = state.timer.manually) {
       state.totalCooked += n
     },
-    decrementProduction (state, n = 1) {
+    decrementProduction (state, n = state.timer.manually) {
       state.totalCooked -= n
     }
   },
   actions: {
+    checkProduction ({commit, state}) {
+      return state.totalCooked > 0
+    },
     incrementProduction ({ commit }, n) {
       commit('incrementProduction', n)
     },
@@ -29,6 +31,9 @@ export default {
     },
     numberCook (state) {
       return state.numberCook
+    },
+    kilo (state) {
+      return state.totalCooked / 1000
     },
     timerProduction (state) {
       return state.timer

@@ -2,8 +2,8 @@
   <div id="app">
     <aside class="Aside">
       <div class="Aside-cook">
-        <p>{{ totalCookedFormatted }} produits en stock</p>
-        <button @click="cook(timerProduction.manually)" class="Aside-cookBtn" type="button" name="button">Fabriquer</button>
+        <p>{{ totalCookedFormatted }} en stock</p>
+        <button @click="cook(timerProduction.manually)" class="Aside-cookBtn" type="button" name="button">Cuisiner</button>
         <br>
         <small>
           production : {{timerProduction.auto}}/sec
@@ -11,10 +11,15 @@
       </div>
       <div class="Aside-sell">
         <p class="Aside-sellTotal">{{totalSell}} $</p>
-        <button @click="sale" class="Aside-sellBtn" type="button" name="button">Vendre</button>
+        <button @click="sellOneProduct" class="Aside-sellBtn" type="button" name="button">Vendre</button>
         <br>
         <small>
-          vente : {{timerSell.auto}}/sec
+          vente : {{timerSell.auto}}/sec<br>
+          <button @click="toggleSale">
+            <span v-show="!sellIsActive">Activer</span>
+            <span v-show="sellIsActive">Désactiver</span>
+            la vente automatique
+          </button>
         </small>
       </div>
     </aside>
@@ -55,42 +60,37 @@ export default {
       'totalSell',
       'priceSell',
       'timerProduction',
-      'timerSell'
+      'timerSell',
+      'sellIsActive',
+      'kilo',
+      'gramme'
     ]),
     totalCookedFormatted () {
-      return Math.ceil(this.totalCooked)
+      const kilo = (this.totalCooked > 1000)
+      const format = (kilo) ? 'Kg' : 'g'
+      const prod = (kilo) ? this.kilo : this.totalCooked
+      return `${Math.round(prod * 100) / 100}${format}`
     },
     totalCookedIsZero () {
       return this.totalCooked <= 0
-    },
-    intervalSaleIsStarted () {
-      return this.interval.sale !== null
-    },
-    intervalProductionIsStarted () {
-      return this.interval.production !== null
     }
   },
   methods: {
     ...mapActions([
       'incrementProduction',
       'decrementProduction',
-      'incrementTotalSell',
-      'decrementTotalSell'
+      'sellProduct',
+      'toggleSale'
     ]),
+    sellOneProduct () {
+      this.sellProduct()
+    },
     cook (numberCooked) {
       this.incrementProduction(numberCooked)
-    },
-    sale () {
-      this.sellProduct()
-      this.deleteProductInStock()
     },
     deleteProduction (value) {
       if (this.totalCookedIsZero) return
       this.totalCooked -= value
-    },
-    sellProduct (value = 1) {
-      if (this.totalCookedIsZero) return
-      this.incrementTotalSell(value)
     },
     setIntervalProduction () {
       this.interval.production = setInterval(() => {
@@ -115,12 +115,12 @@ export default {
     totalCookedIsZero (value) {
       if (this.totalCookedIsZero) {
         this.stopInterval = true
-        this.clearIntervalProduction('sale')
-        this.clearIntervalProduction('production')
+        // this.clearIntervalProduction('sale')
+        // this.clearIntervalProduction('production')
       } else {
         this.stopInterval = false
-        this.setIntervalProduction()
-        this.setIntervalSale()
+        // this.setIntervalProduction()
+        // this.setIntervalSale()
       }
     }
   }
@@ -141,6 +141,7 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     display: flex;
     flex-flow: row wrap;
+    font-size: 14px;
     color: #2c3e50;
   }
 

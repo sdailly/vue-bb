@@ -4,7 +4,8 @@ export default {
   computed: {
     ...mapGetters([
       'intervalProduction',
-      'intervalSale',
+      'sellIsActive',
+      'intervalSaleIsActive',
       'timerSell',
       'totalCooked'
     ]),
@@ -26,17 +27,13 @@ export default {
     ]),
     setIntervalSale () {
       return setInterval(() => {
+        // if (!sellIsActive) return;
         this.deleteProductInStock(this.timerSell.auto)
-        this.sellProduct(1)
       }, 1000)
     },
     deleteProductInStock () {
       if (this.totalCookedIsZero) return
       this.decrementProduction()
-    },
-    sellProduct (value = 1) {
-      if (this.totalCookedIsZero) return
-      this.incrementTotalSell(value)
     }
   }
 }

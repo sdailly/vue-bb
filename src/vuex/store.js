@@ -1,16 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import distribution from './distribution'
 import production from './production'
+import distribution from './distribution'
 import sale from './sale'
 import timer from './timer'
+import cart from './cart'
 
 Vue.use(Vuex)
 export const store = new Vuex.Store({
   modules: {
-    distribution,
     production,
     sale,
-    timer
+    timer,
+    distribution,
+    cart
   }
 })
