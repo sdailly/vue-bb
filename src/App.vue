@@ -25,7 +25,7 @@
     </aside>
     <div class="Content">
       <nav class="Navigation">
-        <a>Fabrication</a>
+        <router-link :to="{path: 'manufacturer'}">Fabricant</router-link>
         <router-link :to="{path: 'distribution'}">Distribution</router-link>
         <a>Matériels</a>
         <a>Fabrication</a>
