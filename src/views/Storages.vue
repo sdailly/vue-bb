@@ -1,9 +1,6 @@
 <template>
-  <div>
-    <p>Destiné à la vente des produits</p>
-    <div class="Listing">
-        <Item :info="info" :key=index v-for="(info, index) in distributors"></Item>
-    </div>
+  <div class="Listing">
+      <Item :info="info" :key=index v-for="(info, index) in storages"></Item>
   </div>
 </template>
 
@@ -13,11 +10,11 @@
   import Item from '../components/item.vue'
 
   export default {
-    name: 'Distribution',
+    name: 'StoragesView',
     store,
     computed: {
       ...mapGetters([
-        'distributors'
+        'storages'
       ])
     },
     components: {

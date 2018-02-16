@@ -14,7 +14,7 @@ export default {
   actions: {
     buyService ({commit, dispatch}, buy) {
       commit('addQuantityOfService', buy.service)
-      dispatch('decrementProduction', buy.service.price)
+      dispatch('decrementProduction', buy.service.price[buy.service.quantity - 1])
       dispatch('returnObjectIfExist', buy).then((object) => {
         if (!object) {
           commit('addService', buy)

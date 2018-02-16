@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import { store } from './vuex/store'
 import { mapGetters, mapActions } from 'vuex'
+import { store } from './vuex/store'
 import interval from './mixins/interval'
 import Navigation from './components/navigation'
 
@@ -170,6 +170,7 @@ export default {
   }
 
   .Content {
+    width: 80%;
     padding: 20px;
   }
 </style>

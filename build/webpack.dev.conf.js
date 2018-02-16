@@ -9,6 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
+const PrettierPlugin = require('prettier-webpack-plugin')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -45,6 +46,13 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     }
   },
   plugins: [
+    new PrettierPlugin({
+        tabWidth: 2,                  // Specify the number of spaces per indentation-level.
+        useTabs: false,               // Indent lines with tabs instead of spaces.
+        semi: false,                   // Print semicolons at the ends of statements.
+        encoding: 'utf-8',            // Which encoding scheme to use on files
+        extensions: [".js"]  // Which file extensions to process
+    }),
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
     }),

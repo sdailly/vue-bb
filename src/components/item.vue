@@ -1,10 +1,15 @@
 <template>
   <div class="Item">
-    <p class="Item-desc">{{ info.name }} <span class="badge" data-badge-caption="">{{info.quantity}}</span></p>
-    <p class="Item-gain">Gain : {{ info.gain[info.quantity] }}$/sec</p>
-    <p class="Item-price">Cout : {{ info.price[info.quantity] }}g</p>
+    <p class="Item-desc">{{ info.name }} <span class="badge" data-badge-caption="" v-if="info.quantity" >{{info.quantity}}</span></p>
+    <p v-if="info.desc" v-html="info.desc" class="Item-gain"></p>
+    <p v-if="info.gain" class="Item-gain">Gain : {{ info.gain }}$/sec</p>
+    <p v-if="info.capacity" class="Item-gain">Capacité : {{ info.capacity }}</p>
+    <p v-if="info.price" class="Item-price">
+      Cout : {{ this.definePrice }}
+      <span v-html="unit"></span>
+    </p>
     <small class="Item-available">
-      <button class="waves-effect waves-light btn disabled" v-if="!serviceIsAvailable(info.price)">Indisponible</button>
+      <button class="waves-effect waves-light btn disabled" v-if="info.price && !serviceIsAvailable(info.price[info.quantity])">Indisponible</button>
       <button v-else @click="buyItemService(info)" class="waves-effect waves-light btn Dealer-add" type="button" name="button">Acheter</button>
     </small>
   </div>
@@ -25,6 +30,19 @@
       info: {
         type: Object,
         required: true
+      },
+      unit: {
+        type:String,
+        default: '€'
+      },
+    },
+    computed: {
+      definePrice() {
+        if (typeof this.info.price === 'object') {
+          return this.info.price[this.info.quantity]
+        } else {
+          return this.info.price
+        }
       }
     },
     methods: {

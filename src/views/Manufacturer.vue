@@ -1,16 +1,19 @@
 <template>
-  <div class="Listing">
-    <Item :info="info" :key=index v-for="(info, index) in manufacturers"></Item>
+  <div>
+    <p>Destiné pour augmenter la production</p>
+    <div class="Listing">
+      <Item :info="info" :key=index v-for="(info, index) in manufacturers"></Item>
+    </div>
   </div>
 </template>
 
 <script>
-  import Item from '../components/item.vue'
-  import { store } from '../vuex/store'
   import { mapGetters } from 'vuex'
+  import { store } from '../vuex/store'
+  import Item from '../components/item.vue'
 
   export default {
-    name: 'Production',
+    name: 'Manufacturers',
     store,
     computed: {
       ...mapGetters([

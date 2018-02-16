@@ -1,30 +1,27 @@
-import gain from './gain'
 import price from './cost'
+import manufacturersTypes from './type'
 
-const dealers = ['jeune dealer', 'dealer confirmé', 'dealer expérimenté']
-const distributors = dealers.map((name, index) => {
+const manufacturers = manufacturersTypes.map((manufacturer, index) => {
   return {
-    name: name,
+    name: manufacturer.name,
     active: false,
     quantity: 0,
-    gain: gain[index],
+    gain: manufacturer.gain,
     price: price[index]
   }
 })
 
 export default {
   state: {
-    distributors
+    manufacturers
   },
-  mutations: { },
-  actions: { },
   getters: {
-    distributors (state) {
-      return state.distributors
+    manufacturers (state) {
+      return state.manufacturers
     },
-    distributorsBuy (state) {
-      return state.distributors.filter((distributor) => {
-        return distributor.quantity > 0
+    manufacturersBuy (state) {
+      return state.manufacturers.filter((manufacturer) => {
+        return manufacturer.quantity > 0
       })
     }
   }
