@@ -1,13 +1,11 @@
 <template>
   <div class="Item">
-    <p class="Item-desc">{{ info.name }}</p>
-    <p class="Item-gain">Gain : {{ info.gain }}$/sec</p>
-    <p class="Item-price">Cout : {{ info.price }}g</p>
-    <p class="Item-price">Quantité : {{ info.quantity }}</p>
-    <p class="Item-active">Vente auto : {{ info.active }}</p>
+    <p class="Item-desc">{{ info.name }} <span class="badge" data-badge-caption="">{{info.quantity}}</span></p>
+    <p class="Item-gain">Gain : {{ info.gain[info.quantity] }}$/sec</p>
+    <p class="Item-price">Cout : {{ info.price[info.quantity] }}g</p>
     <small class="Item-available">
-      <span v-if="!serviceIsAvailable(info.price)">Indisponible</span>
-      <button v-else @click="buyItemService(info)" class="Dealer-add" type="button" name="button">Acheter</button>
+      <button class="waves-effect waves-light btn disabled" v-if="!serviceIsAvailable(info.price)">Indisponible</button>
+      <button v-else @click="buyItemService(info)" class="waves-effect waves-light btn Dealer-add" type="button" name="button">Acheter</button>
     </small>
   </div>
 </template>
@@ -45,6 +43,13 @@
 
 <style scoped>
   .Item {
+    flex: 1 auto;
     padding: 10px;
+    border-left: 1px solid #eee;
+    padding: 0 30px;
+  }
+  .Item-desc {
+    text-transform: uppercase;
+    font-weight: bold;
   }
 </style>

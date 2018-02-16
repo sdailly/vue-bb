@@ -1,6 +1,6 @@
 export default {
   state: {
-    totalCooked: 1000,
+    totalCooked: 100,
     timer: {
       manually: 0.25,
       auto: 0

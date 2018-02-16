@@ -1,9 +1,12 @@
 <template>
   <div id="app">
+    <navigation></navigation>
     <aside class="Aside">
       <div class="Aside-cook">
         <p>{{ totalCookedFormatted }} en stock</p>
-        <button @click="cook(timerProduction.manually)" class="Aside-cookBtn" type="button" name="button">Cuisiner</button>
+        <button @click="cook(timerProduction.manually)" class="Aside-cookBtn waves-effect waves-light btn" type="button" name="button">
+          Cuisiner
+          </button>
         <br>
         <small>
           production : {{timerProduction.auto}}/sec
@@ -11,11 +14,11 @@
       </div>
       <div class="Aside-sell">
         <p class="Aside-sellTotal">{{totalSell}} $</p>
-        <button @click="sellOneProduct" class="Aside-sellBtn" type="button" name="button">Vendre</button>
+        <button :disabled="totalCookedIsZero" @click="sellOneProduct" class="Aside-sellBtn waves-effect waves-light btn" type="button" name="button">Vendre</button>
         <br>
         <small>
           vente : {{timerSell.auto}}/sec<br>
-          <button @click="toggleSale">
+          <button class="waves-effect waves-light btn" :disabled="stopInterval" @click="toggleSale">
             <span v-show="!sellIsActive">Activer</span>
             <span v-show="sellIsActive">Désactiver</span>
             la vente automatique
@@ -24,14 +27,6 @@
       </div>
     </aside>
     <div class="Content">
-      <nav class="Navigation">
-        <router-link :to="{path: 'manufacturer'}">Fabricant</router-link>
-        <router-link :to="{path: 'distribution'}">Distribution</router-link>
-        <a>Matériels</a>
-        <a>Fabrication</a>
-        <a>Succes</a>
-      </nav>
-      <hr>
       <router-view></router-view>
     </div>
   </div>
@@ -41,13 +36,15 @@
 import { store } from './vuex/store'
 import { mapGetters, mapActions } from 'vuex'
 import interval from './mixins/interval'
+import Navigation from './components/navigation'
 
 export default {
   name: 'app',
   store,
   data () {
     return {
-      limitStock: 100
+      limitStock: 100,
+      stopInterval: true
     }
   },
   mixins: [
@@ -126,11 +123,24 @@ export default {
         // this.setIntervalSale()
       }
     }
+  },
+  components: {
+    Navigation
   }
 }
 </script>
 
 <style>
+  @import 'materialize-css/dist/css/materialize.min.css';
+  .btn {
+    font-size: 14px;
+    text-transform: none;
+    border-radius: 5px;
+    box-shadow: none
+  }
+  .btn:hover {
+    box-shadow: none
+  }
   body {
     padding: 0;
     margin: 0;
@@ -155,6 +165,8 @@ export default {
     background: #eee;
     padding: 20px;
     text-align: center;
+    position: relative;
+    z-index: 1;
   }
 
   .Content {

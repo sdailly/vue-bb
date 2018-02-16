@@ -1,6 +1,6 @@
 <template>
   <div class="Listing">
-    <Item :info="info" v-for="(info, index) in manufacturers"></Item>
+    <Item :info="info" :key=index v-for="(info, index) in manufacturers"></Item>
   </div>
 </template>
 
