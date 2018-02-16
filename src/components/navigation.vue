@@ -25,6 +25,9 @@
   .tabs .tab {
     padding: 0 10px;  
   }
+  .tabs .tab.active {
+    background: rgba(0,0,0,0.1)
+  }
 </style>
 
       
