@@ -1,14 +1,20 @@
 export default [
   {
     name: 'jeune dealer',
-    gain: 10
+    gain: 7,
+    costAuto: false,
+    gainAuto: true
   },
   {
     name: 'dealer confirmé',
-    gain: 10
+    gain: 12,
+    costAuto: false,
+    gainAuto: true
   },
   {
     name: 'dealer expérimenté',
-    gain: 10
+    gain: 45,
+    costAuto: false,
+    gainAuto: true
   }
 ]

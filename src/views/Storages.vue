@@ -27,5 +27,7 @@
   .Listing {
     display: flex;
     flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: flex-start
   }
 </style>

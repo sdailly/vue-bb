@@ -1,7 +1,14 @@
 import gain from './gain'
 import price from './cost'
 
-const manufacturersTypes = ['jeune assistant', 'Assistant confirmé', 'Assistant expérimenté']
+const manufacturersTypes = [
+  'jeune assistant', 
+  'Assistant confirmé', 
+  'Assistant expérimenté',
+  'Caravane',
+  'Cave',
+  'Maison'
+]
 const manufacturers = manufacturersTypes.map((name, index) => {
   return {
     name: name,

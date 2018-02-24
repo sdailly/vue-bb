@@ -4,25 +4,26 @@
     <aside class="Aside">
       <div class="Aside-cook">
         <p>{{ totalCookedFormatted }} en stock</p>
-        <button @click="cook(timerProduction.manually)" class="Aside-cookBtn waves-effect waves-light btn" type="button" name="button">
+        <button @click="cook(20)" class="Aside-cookBtn waves-effect waves-light btn" type="button" name="button">
           Cuisiner
           </button>
         <br>
-        <small>
-          production : {{timerProduction.auto}}/sec
+        <small v-if="Cart_Gain_production && Cart_Cost_production ">
+          <strong>production :</strong> {{Cart_Gain_production}}g/sec & {{Cart_Cost_production}}$/sec
         </small>
       </div>
+      <hr>
       <div class="Aside-sell">
         <p class="Aside-sellTotal">{{totalSell}} $</p>
         <button :disabled="totalCookedIsZero" @click="sellOneProduct" class="Aside-sellBtn waves-effect waves-light btn" type="button" name="button">Vendre</button>
         <br>
         <small>
-          vente : {{timerSell.auto}}/sec<br>
-          <button class="waves-effect waves-light btn" :disabled="stopInterval" @click="toggleSale">
+          <!--vente : {{timerSell.auto}}/sec<br>-->
+          <!--<button class="waves-effect waves-light btn" :disabled="stopInterval" @click="toggleSale">
             <span v-show="!sellIsActive">Activer</span>
             <span v-show="sellIsActive">Désactiver</span>
             la vente automatique
-          </button>
+          </button>-->
         </small>
       </div>
     </aside>
@@ -44,7 +45,7 @@ export default {
   data () {
     return {
       limitStock: 100,
-      stopInterval: true
+      interval: null
     }
   },
   mixins: [
@@ -53,26 +54,16 @@ export default {
   computed: {
     ...mapGetters([
       'totalCooked',
-      'numberCook',
       'totalSell',
-      'priceSell',
-      'timerProduction',
-      'timerSell',
-      'sellIsActive',
-      'kilo',
-      'gramme'
+      'Cart_Gain_production',
+      'Cart_Cost_production'
     ]),
     totalCookedFormatted () {
-      const kilo = (this.totalCooked > 1000)
-      const format = (kilo) ? 'Kg' : 'g'
-      const prod = (kilo) ? this.kilo : this.totalCooked
-      return `${Math.round(prod * 100) / 100}${format}`
+      const format = 'g'
+      return `${this.totalCooked} ${format}`
     },
     totalCookedIsZero () {
       return this.totalCooked <= 0
-    },
-    checkStock () {
-      return (Math.min(this.totalCooked, Math.max(0, this.totalCooked)))
     }
   },
   methods: {
@@ -83,49 +74,30 @@ export default {
       'toggleSale'
     ]),
     sellOneProduct () {
-      this.sellProduct()
+      this.sellProduct(30)
     },
     cook (numberCooked) {
       this.incrementProduction(numberCooked)
     },
-    deleteProduction (value) {
-      if (this.totalCookedIsZero) return
-      this.totalCooked -= value
-    },
-    setIntervalProduction () {
-      this.interval.production = setInterval(() => {
-        this.cook(this.timerProduction.auto)
+    setInterval () {
+      if (this.interval) this.clearInterval()
+      this.interval = setInterval(() => {
+        this.incrementProduction(this.Cart_Gain_production)
       }, 1000)
     },
-    setIntervalSale () {
-      this.interval.sale = setInterval(() => {
-        this.deleteProductInStock(this.timerSell.auto)
-        this.sellProduct(this.price)
-      }, 1000)
-    },
-    clearIntervalProduction (intervalName) {
-      const intervalObject = this.$data.interval[intervalName]
-      if (!intervalObject) return
-      window.clearInterval(intervalObject)
-      console.log(this.$data.interval[intervalName])
-      this.$data.interval[intervalName] = null
-    }
-  },
-  watch: {
-    totalCookedIsZero (value) {
-      if (this.totalCookedIsZero) {
-        this.stopInterval = true
-        // this.clearIntervalProduction('sale')
-        // this.clearIntervalProduction('production')
-      } else {
-        this.stopInterval = false
-        // this.setIntervalProduction()
-        // this.setIntervalSale()
-      }
+    clearInterval () {
+      clearInterval(this.interval)
     }
   },
   components: {
     Navigation
+  },
+  watch: {
+    Cart_Gain_production () {
+      if (this.Cart_Gain_production > 0 && !this.interval) {
+        this.setInterval()
+      }
+    }
   }
 }
 </script>

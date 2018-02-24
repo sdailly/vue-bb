@@ -2,7 +2,7 @@
   <div>
     <p>Destiné à la vente des produits</p>
     <div class="Listing">
-        <Item :info="info" :key=index v-for="(info, index) in distributors"></Item>
+      <Item gainType="money" :info="info" :key=index v-for="(info, index) in distributors"></Item>
     </div>
   </div>
 </template>
@@ -29,6 +29,6 @@
 <style>
   .Listing {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row wrap;  
   }
 </style>

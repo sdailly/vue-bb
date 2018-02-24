@@ -4,7 +4,9 @@ import dealers from './type'
 const distributors = dealers.map((distributor, index) => {
   return {
     name: distributor.name,
-    active: false,
+    costType: distributor.costType,
+    costAuto: distributor.costAuto,
+    gainAuto: distributor.gainAuto,
     quantity: 0,
     gain: distributor.gain,
     price: price[index]

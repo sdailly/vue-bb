@@ -1,38 +1,51 @@
 export default {
   state: {
-    distribution: [],
-    production: []
+    listServicesBuy: []
   },
   mutations: {
-    addService (state, item) {
-      state[item.category].push(item.service)
+    pushProductToCart (state, item) {
+      state.listServicesBuy.push(item)
     },
-    addQuantityOfService (state, object) {
-      object.quantity += 1
+    addQtyService (state, item) {
+      const index = state.listServicesBuy.indexOf(item)
+      state.listServicesBuy[index].quantity++
     }
   },
   actions: {
-    buyService ({commit, dispatch}, buy) {
-      commit('addQuantityOfService', buy.service)
-      dispatch('decrementProduction', buy.service.price[buy.service.quantity - 1])
-      dispatch('returnObjectIfExist', buy).then((object) => {
-        if (!object) {
-          commit('addService', buy)
-        }
-      })
+    addProductToCart ({state, commit, dispatch}, item) {
+      dispatch('decrementDollars', item.formationCost)
+      const cartItem = state.listServicesBuy.find(service => service.name === item.name)
+      if (cartItem) {
+        commit('addQtyService', cartItem)
+      } else {
+        commit('pushProductToCart', item)
+        commit('addQtyService', item)
+      }
     },
-    returnObjectIfExist ({state}, buy) {
-      return state[buy.category].find((item) => {
-        return item.name === buy.service.name
+    addToCartDistribution ({commit, dispatch}, buy) {
+    },
+    returnObjectIfExist ({state}, item) {
+      return state.listServicesBuy.find((item) => {
+        return item.name === item.name
       })
     }
   },
   getters: {
-    gainProduction (state) {
-      // return state.gain.production
+    Cart_Production (state) {
+      return state.listServicesBuy.filter(service => service.category === 'production')
     },
-    gainSale (state) {
-      // return state.gain.sale
+    Cart_Distribution (state) {
+      return state.listServicesBuy.filter(service => service.category === 'distribution')
+    },
+    Cart_Gain_production (state, getters) {
+      if (!getters.Cart_Production.length) return null
+      const qty = getters.Cart_Production.map(item => item.quantity).reduce((acc, current) => acc + current)
+      const gain = getters.Cart_Production.map(item => item.gain).reduce((acc, current) => acc + current)
+      return qty * gain
+    },
+    Cart_Cost_production (state, getters) {
+      if (!getters.Cart_Production.length) return null
+      return getters.Cart_Production.map(item => item.cost).reduce((acc, current) => acc + current)
     }
   }
 }

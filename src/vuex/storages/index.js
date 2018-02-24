@@ -12,6 +12,6 @@ export default {
     },
     storageUnit (state) {
       return state.unit
-    },
+    }
   }
 }

@@ -1,28 +1,24 @@
 export default {
   state: {
-    active: false, // auto sale
-    totalSell: 0, // total gain $
-    price: 0.10, // $ per unit
-    timer: {
-      manually: 0.15, // sell product per click
-      auto: 0 // sell product per seconds - group all distributions services
-    }
+    autoIsActive: false, // auto sale
+    totalSell: 6000, // total gain $
+    price: 0.70 // $ per unit
   },
   mutations: {
     addGain (state, n) {
       state.totalSell += n * state.price
     },
-    incrementTimerSell (state, n = 1) {
-      state.timer.auto += n
+    removeGain (state, n) {
+      state.totalSell -= n
     },
     toggleSale (state) {
-      state.active = !state.active
+      state.autoIsActive = !state.autoIsActive
     },
     activeSale (state) {
-      state.active = true
+      state.autoIsActive = true
     },
     disableSale (state) {
-      state.active = false
+      state.autoIsActive = false
     }
   },
   actions: {
@@ -37,6 +33,9 @@ export default {
           })
         }
       })
+    },
+    decrementDollars ({commit}, n) {
+      commit('removeGain', n)
     },
     checkProductionBeforeSale ({getters}, n) {
       return (getters.totalCooked - n < 0) ? getters.totalCooked : n
@@ -56,7 +55,7 @@ export default {
   },
   getters: {
     sellIsActive (state) {
-      return state.active
+      return state.autoIsActive
     },
     totalSell (state) {
       return Math.round(state.totalSell * 100) / 100
